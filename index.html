@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ATS Checker — Resume vs Job Description</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <!-- pdf.js (browser) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.min.js" defer></script>
+  <!-- html2pdf for report export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+  <!-- mammoth (optional .docx support; will only load if used) -->
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <img src="images.jpg" alt="ATS Checker Logo" class="logo">
+    <h1>ATS Checker</h1>
+  </header>
+  <!-- Rest of your content -->
+
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>ATS Checker</h1>
+      <p class="subtitle">Upload your resume (PDF or DOCX) or paste the text, add a job description, and get an ATS-style score with actionable fixes.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card inputs">
+      <div class="tabs" role="tablist" aria-label="Resume input modes">
+        <button class="tab active" role="tab" aria-selected="true" data-tab="upload">Upload Resume</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="paste">Paste Resume Text</button>
+      </div>
+
+      <div id="tab-upload" class="tab-panel active" role="tabpanel">
+        <div class="grid two">
+          <div>
+            <label for="resume-file" class="label">Resume file (.pdf or .docx)</label>
+            <input id="resume-file" type="file" accept=".pdf,.docx" />
+            <p class="hint">PDF is most reliable. DOCX is experimental (uses client-side parsing).</p>
+            <div id="filename-tip" class="hint">Tip: Try to name your file like <code>Firstname_Lastname_JobTitle.pdf</code>.</div>
+          </div>
+          <div>
+            <label class="label">Detected resume text (read-only)</label>
+            <textarea id="resume-text" placeholder="Detected text will appear here..." readonly></textarea>
+            <div class="actions-row">
+              <button id="btn-extract" class="btn">Extract Text</button>
+              <button id="btn-clear-resume" class="btn ghost">Clear</button>
+              <button id="btn-save-text" class="btn ghost">Download as .txt</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-paste" class="tab-panel" role="tabpanel" hidden>
+        <label for="resume-text-manual" class="label">Paste resume text</label>
+        <textarea id="resume-text-manual" placeholder="Paste your resume text here..."></textarea>
+        <div class="actions-row">
+          <button id="btn-use-pasted" class="btn">Use This Text</button>
+          <button id="btn-clear-pasted" class="btn ghost">Clear</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card jd">
+      <h2 class="card-title">Job Description</h2>
+      <label for="job-desc" class="label">Paste the job description</label>
+      <textarea id="job-desc" placeholder="Paste the target job description here..."></textarea>
+      <div class="actions-row">
+        <button id="btn-sample-jd" class="btn ghost">Use Sample JD</button>
+        <button id="btn-analyze" class="btn primary">Analyze</button>
+      </div>
+    </section>
+
+    <section id="results" class="card results" hidden>
+      <div class="results-header">
+        <h2 class="card-title">Results</h2>
+        <div class="score-wrap">
+          <div class="ring" id="score-ring" data-score="0">
+            <div class="ring-inner">
+              <div class="score-number" id="score-number">0</div>
+              <div class="score-label">ATS Score</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid three">
+        <div class="panel">
+          <h3>Keyword Match</h3>
+          <p class="dim">Shows which job keywords you cover and which you’re missing.</p>
+          <div class="chip-row" id="keywords-hit"></div>
+          <hr />
+          <h4>Missing</h4>
+          <div class="chip-row miss" id="keywords-miss"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Sections & Formatting</h3>
+          <ul id="checks-list" class="checks"></ul>
+        </div>
+
+        <div class="panel">
+          <h3>Suggestions</h3>
+          <ul id="suggestions" class="suggestions"></ul>
+        </div>
+      </div>
+
+      <div class="actions-row end">
+        <button id="btn-copy-summary" class="btn ghost">Copy Summary</button>
+        <button id="btn-download-json" class="btn ghost">Download JSON</button>
+        <button id="btn-export-pdf" class="btn">Download Report (PDF)</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <p>Built by Chavan Priyanka.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
